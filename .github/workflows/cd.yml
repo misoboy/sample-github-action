@@ -74,6 +74,8 @@ jobs:
     needs: docker
     runs-on: ubuntu-latest
     steps:
+      - uses: benjlevesque/short-sha@v1.2
+        id: short-sha
       - name: deploy to cluster
         uses: kodermax/kubectl-aws-eks@master
         env:
