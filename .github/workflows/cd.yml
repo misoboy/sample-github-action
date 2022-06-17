@@ -9,7 +9,7 @@ on:
 #      - closed
 jobs:
   app-dev:
-    if: github.event.pull_request.merged == true
+    #if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     environment: development
     steps:
@@ -71,7 +71,7 @@ jobs:
             GIT_SHORT_SHA=${{ steps.short-sha.outputs.sha }}
 
   app-stage:
-    if: github.event.pull_request.merged == true
+    #if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     environment: staging
     steps:
@@ -133,7 +133,7 @@ jobs:
             GIT_SHORT_SHA=${{ steps.short-sha.outputs.sha }}        
 
   app-prd:
-    if: github.event.pull_request.merged == true
+    #if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     environment: production
     steps:
