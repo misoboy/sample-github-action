@@ -43,8 +43,6 @@ jobs:
         with:
           name: output-artifact
           path: target/artifact
-#      - name: Set up QEMU
-#        uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
       - name: Login to DockerHub
@@ -52,6 +50,14 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Docker meta
+        id: docker_meta
+        uses: docker/metadata-action@v4
+        with:
+          images: misoboy/demo
+          tag-semver: |
+            {{version}}
+            {{major}}.{{minor}}
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
@@ -59,8 +65,5 @@ jobs:
           file: ./target/artifact/Dockerfile
           platforms: linux/amd64
           push: true
-#          tags: ${{ steps.docker_meta.outputs.tags }}
-#          labels: ${{ steps.docker_meta.outputs.labels }}
-          tags: misoboy/demo:latest
-
-          
+          tags: ${{ steps.docker_meta.outputs.tags }}
+          labels: ${{ steps.docker_meta.outputs.labels }}
