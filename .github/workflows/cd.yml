@@ -8,7 +8,7 @@ on:
 #    types:
 #      - closed
 jobs:
-  app:
+  build:
     runs-on: ubuntu-latest
     outputs:
       branch: ${{ steps.extract_branch.outputs.branch }}
@@ -40,7 +40,7 @@ jobs:
           path: target/artifact
 
   docker-dev:
-    needs: app
+    needs: build
     runs-on: ubuntu-latest
     if: ${{ needs.build.outputs.branch == 'development' }}
     steps:
@@ -75,7 +75,7 @@ jobs:
             GIT_SHORT_SHA=${{ steps.short-sha.outputs.sha }}
 
   docker-stage:
-    needs: app
+    needs: build
     runs-on: ubuntu-latest
     if: ${{ needs.build.outputs.branch == 'staging' }}
     steps:
@@ -110,7 +110,7 @@ jobs:
             GIT_SHORT_SHA=${{ steps.short-sha.outputs.sha }}        
 
   docker-prd:
-    needs: app
+    needs: build
     runs-on: ubuntu-latest
     if: ${{ needs.build.outputs.branch == 'production' }}
     steps:
