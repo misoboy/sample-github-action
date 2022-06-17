@@ -78,7 +78,7 @@ jobs:
         uses: kodermax/kubectl-aws-eks@master
         env:
           KUBECTL_VERSION: "v1.22.0"
-          IAM_VERSION: "0.5.5"
+          IAM_VERSION: "0.5.6"
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
