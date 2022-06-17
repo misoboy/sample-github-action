@@ -5,8 +5,6 @@ name: CI
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
-  push:
-    branches: [ "main" ]
   pull_request:
     branches: [ "development", "staging", "production" ]
     types:
@@ -39,7 +37,7 @@ jobs:
           name: output-artifact
           path: target/artifact
   docker-dev:
-    needs: app
+    needs: app-dev
     runs-on: ubuntu-latest
     environment: development
     steps:
@@ -102,7 +100,7 @@ jobs:
           name: output-artifact
           path: target/artifact
   docker-stage:
-    needs: app
+    needs: app-stage
     runs-on: ubuntu-latest
     environment: staging
     steps:
@@ -165,7 +163,7 @@ jobs:
           name: output-artifact
           path: target/artifact
   docker-prd:
-    needs: app
+    needs: app-prd
     runs-on: ubuntu-latest
     environment: production
     steps:
