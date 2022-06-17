@@ -42,9 +42,6 @@ jobs:
     steps:
       - uses: benjlevesque/short-sha@v1.2
         id: short-sha
-      - run: echo $SHORT_SHA
-        env:
-          SHORT_SHA: ${{ steps.short-sha.outputs.sha }}
       - uses: actions/download-artifact@master
         with:
           name: output-artifact
@@ -68,7 +65,7 @@ jobs:
           file: ./target/artifact/Dockerfile
           platforms: linux/amd64
           push: true
-          tags: 1.0-${{ env.SHORT_SHA }}
+          tags: 1.0-${{ steps.short-sha.outputs.sha }}
           #labels: ${{ steps.docker_meta.outputs.labels }}
           labels: |
-            GIT_SHORT_SHA=${{ env.SHORT_SHA }}
+            GIT_SHORT_SHA=${{ steps.short-sha.outputs.sha }}
