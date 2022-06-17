@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: development
     steps:
-      - name: dynamic echo environmentss
+      - name: dynamic echo environments
         run: echo ${{ secrets.ENV_SECRET }}
       - uses: actions/checkout@v3
       - name: Set up JDK 11
@@ -35,7 +35,6 @@ jobs:
   docker-dev:
     needs: app-dev
     runs-on: ubuntu-latest
-    environment: development
     steps:
       - name: dynamic echo environments
         run: echo ${{ secrets.ENV_SECRET }}
@@ -98,7 +97,6 @@ jobs:
   docker-stage:
     needs: app-stage
     runs-on: ubuntu-latest
-    environment: staging
     steps:
       - name: dynamic echo environments
         run: echo ${{ secrets.ENV_SECRET }}
@@ -161,7 +159,6 @@ jobs:
   docker-prd:
     needs: app-prd
     runs-on: ubuntu-latest
-    environment: production
     steps:
       - name: dynamic echo environments
         run: echo ${{ secrets.ENV_SECRET }}
