@@ -29,6 +29,7 @@ jobs:
         run: mvn clean -DskipTests package
       - run: |
           mkdir -p target/artifact
+          mv Dockerfile target/artifact
           mv target/*.jar target/artifact
       - uses: actions/upload-artifact@master
         with:
@@ -54,8 +55,8 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
-          context: .
-          file: ./Dockerfile
+          context: target/artifact
+          file: ./target/artifact/Dockerfile
           platforms: linux/amd64
           push: true
 #          tags: ${{ steps.docker_meta.outputs.tags }}
