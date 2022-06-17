@@ -69,3 +69,18 @@ jobs:
           #labels: ${{ steps.docker_meta.outputs.labels }}
           labels: |
             GIT_SHORT_SHA=${{ steps.short-sha.outputs.sha }}
+
+  deploy:
+    needs: docker
+    runs-on: ubuntu-latest
+    steps:
+      - name: deploy to cluster
+        uses: kodermax/kubectl-aws-eks@master
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+        with:
+          args: set image deployment demo demo=misoboy/demo:1.0-${{ steps.short-sha.outputs.sha }}
