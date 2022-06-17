@@ -35,6 +35,7 @@ jobs:
           name: output-artifact
           path: target/artifact
   docker:
+    needs: app
     runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@master
