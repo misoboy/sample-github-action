@@ -65,7 +65,7 @@ jobs:
           file: ./target/artifact/Dockerfile
           platforms: linux/amd64
           push: true
-          tags: 1.0-${{ steps.short-sha.outputs.sha }}
+          tags: misoboy/demo:1.0-${{ steps.short-sha.outputs.sha }}
           #labels: ${{ steps.docker_meta.outputs.labels }}
           labels: |
             GIT_SHORT_SHA=${{ steps.short-sha.outputs.sha }}
