@@ -114,6 +114,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     if: ${{ needs.build.outputs.branch == 'production' }}
+    environment: production
     steps:
       - uses: benjlevesque/short-sha@v1.2
         id: short-sha
