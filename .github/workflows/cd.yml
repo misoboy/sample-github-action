@@ -1,18 +1,13 @@
 name: CI
 
 on:
-#  push:
-#    branches: [ "development", "staging", "production" ]
+  push:
+    branches: [ "development", "staging", "production" ]
 #  pull_request:
 #    branches: [ "development", "staging", "production" ]
 #    types:
 #      - closed
   workflow_dispatch:
-    inputs:
-      job:
-        description: 'Job to run. '
-        required: true
-        default: 'deploy-dev'
 
 jobs:
   build:
@@ -87,7 +82,6 @@ jobs:
   deploy-dev:
     needs: docker-dev
     runs-on: ubuntu-latest
-    if: ${{ github.event.inputs.job == 'deploy-dev'}}
     steps:
       - name: Sync ArgoCD Application
         shell: bash
