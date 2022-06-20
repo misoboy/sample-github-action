@@ -50,8 +50,6 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ needs.build.outputs.branch == 'development' }}
     steps:
-      - uses: benjlevesque/short-sha@v1.2
-        id: short-sha
       - uses: actions/download-artifact@master
         with:
           name: output-artifact
