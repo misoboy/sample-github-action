@@ -92,7 +92,7 @@ jobs:
 #          action: sync
 #          appName: "my-example-app"
 
-  docker-stage:
+  docker-stg:
     needs: build
     runs-on: ubuntu-latest
     if: ${{ needs.build.outputs.branch == 'staging' }}
