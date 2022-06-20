@@ -77,6 +77,20 @@ jobs:
           #labels: ${{ steps.docker_meta.outputs.labels }}
           labels: |
             GIT_SHORT_SHA=${{ needs.build.outputs.sha_short }}
+  deploy-dev:
+    needs: docker-dev
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sync ArgoCD Application
+        shell: bash
+        run: |
+          echo "docker-dev"
+#        uses: omegion/argocd-actions@v1
+#        with:
+#          address: "argocd.example.com"
+#          token: ${{ secrets.ARGOCD_TOKEN }}
+#          action: sync
+#          appName: "my-example-app"
 
   docker-stage:
     needs: build
@@ -109,7 +123,21 @@ jobs:
           tags: misoboy/demo:1.0-${{ needs.build.outputs.sha_short }}
           #labels: ${{ steps.docker_meta.outputs.labels }}
           labels: |
-            GIT_SHORT_SHA=${{ needs.build.outputs.sha_short }}        
+            GIT_SHORT_SHA=${{ needs.build.outputs.sha_short }}
+  deploy-stg:
+    needs: docker-stg
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sync ArgoCD Application
+        shell: bash
+        run: |
+          echo "docker-stg"
+  #        uses: omegion/argocd-actions@v1
+  #        with:
+  #          address: "argocd.example.com"
+  #          token: ${{ secrets.ARGOCD_TOKEN }}
+  #          action: sync
+  #          appName: "my-example-app"
 
   docker-prd:
     needs: build
@@ -144,6 +172,20 @@ jobs:
           #labels: ${{ steps.docker_meta.outputs.labels }}
           labels: |
             GIT_SHORT_SHA=${{ needs.build.outputs.sha_short }}
+  deploy-prd:
+    needs: docker-prd
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sync ArgoCD Application
+        shell: bash
+        run: |
+          echo "docker-prd"
+    #        uses: omegion/argocd-actions@v1
+    #        with:
+    #          address: "argocd.example.com"
+    #          token: ${{ secrets.ARGOCD_TOKEN }}
+    #          action: sync
+    #          appName: "my-example-app"
 #  deploy:
 #    needs: docker
 #    runs-on: ubuntu-latest
