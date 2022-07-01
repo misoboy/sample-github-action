@@ -51,6 +51,8 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     if: ${{ needs.build.outputs.branch == 'development' }}
+    outputs:
+      version: ${{ steps.image.outputs.version }}
     steps:
       - uses: actions/download-artifact@master
         with:
@@ -72,8 +74,6 @@ jobs:
         id: image
         run: |
           VERSION="1.0-${{ needs.build.outputs.sha_short }}"
-          IMAGE_ID="misoboy/demo:$VERSION"
-          echo "::set-output name=imageId::$IMAGE_ID"
           echo "::set-output name=version::$VERSION"
 
       - name: Build and push
@@ -83,7 +83,7 @@ jobs:
           file: ./target/artifact/Dockerfile
           platforms: linux/amd64
           push: true
-          tags: ${{ steps.image.outputs.imageId }}
+          tags: misoboy/demo:${{ steps.image.outputs.version }}
           #labels: ${{ steps.docker_meta.outputs.labels }}
           labels: |
             GIT_SHORT_SHA=${{ needs.build.outputs.sha_short }}
@@ -102,14 +102,14 @@ jobs:
         with:
           valueFile: 'deployments.yaml'
           propertyPath: 'spec.template.spec.containers[0].image'
-          value: ${{ needs.docker-dev.steps.image.outputs.imageId }}
-          branch: feature/${{ needs.docker-dev.steps.image.outputs.version }}
+          value: misoboy/demo:${{ needs.docker-dev.outputs.version }}
+          branch: feature/${{ needs.docker-dev.outputs.version }}
           targetBranch: development
           masterBranchName: development
           createPR: true
           title: "Update Image Version"
           description: "Update Image Version"
-          message: 'Update Image Version to ${{ needs.docker-dev.steps.image.outputs.imageId }}'
+          message: 'Update Image Version to misoboy/demo:${{ needs.docker-dev.outputs.version }}'
           repository: misoboy/sample-manifest
           token: ${{ secrets.GIT_TOKEN }}
 
