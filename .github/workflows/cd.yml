@@ -99,6 +99,7 @@ jobs:
         with:
           repository: misoboy/sample-manifest
           ref: development
+          token: ${{ secrets.GIT_TOKEN }}
       - name: Deploy Manifest
         uses: fjogeleit/yaml-update-action@main
         with:
@@ -107,8 +108,13 @@ jobs:
           value: ${{ needs.docker-dev.outputs.imageId }}
           branch: feature/${{ needs.docker-dev.outputs.version }}
           targetBranch: development
+          masterBranchName: main
           createPR: true
+          title: "Update Image Version"
+          description: "Update Image Version"
           message: 'Update Image Version to ${{ needs.docker-dev.steps.image.outputs.imageId }}'
+          repository: misoboy/sample-manifest
+          token: ${{ secrets.GIT_TOKEN }}
 
   docker-stg:
     needs: build
