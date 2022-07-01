@@ -51,6 +51,9 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     if: ${{ needs.build.outputs.branch == 'development' }}
+    outputs:
+      imageId: ${{ steps.image.outputs.imageId }}
+      version: ${{ steps.image.outputs.version }}
     steps:
       - uses: actions/download-artifact@master
         with:
@@ -68,6 +71,14 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: misoboy/demo
+      - name: Generate Image Version
+        id: image
+        run: |
+          VERSION=1.0-${{ needs.build.outputs.sha_short }}
+          IMAGE_ID=misoboy/demo:$VERSION
+          echo "::set-output name=imageId::$IMAGE_ID"
+          echo "::set-output name=version::$VERSION"
+
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
@@ -75,7 +86,7 @@ jobs:
           file: ./target/artifact/Dockerfile
           platforms: linux/amd64
           push: true
-          tags: misoboy/demo:1.0-${{ needs.build.outputs.sha_short }}
+          tags: ${{ steps.image.outputs.imageId }}
           #labels: ${{ steps.docker_meta.outputs.labels }}
           labels: |
             GIT_SHORT_SHA=${{ needs.build.outputs.sha_short }}
@@ -83,16 +94,21 @@ jobs:
     needs: docker-dev
     runs-on: ubuntu-latest
     steps:
-      - name: Sync ArgoCD Application
-        shell: bash
-        run: |
-          echo "docker-dev"
-#        uses: omegion/argocd-actions@v1
-#        with:
-#          address: "argocd.example.com"
-#          token: ${{ secrets.ARGOCD_TOKEN }}
-#          action: sync
-#          appName: "my-example-app"
+      - name: Manifest Repository Checkout
+        uses: actions/checkout@v3
+        with:
+          repository: misoboy/sample-manifest
+          ref: development
+      - name: Deploy Manifest
+        uses: fjogeleit/yaml-update-action@main
+        with:
+          valueFile: 'deployments.yaml'
+          propertyPath: 'spec.template.spec.containers[0].image'
+          value: ${{ needs.docker-dev.outputs.imageId }}
+          branch: feature/${{ needs.docker-dev.outputs.version }}
+          targetBranch: development
+          createPR: true
+          message: 'Update Image Version to ${{ needs.docker-dev.steps.image.outputs.imageId }}'
 
   docker-stg:
     needs: build
