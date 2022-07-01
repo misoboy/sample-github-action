@@ -107,7 +107,7 @@ jobs:
           #targetBranch: development
           branch: development
           masterBranchName: development
-          createPR: true
+          createPR: false
           title: "Update Image Version"
           description: "Update Image Version"
           message: 'Update Image Version to misoboy/demo:${{ needs.docker-dev.outputs.version }}'
