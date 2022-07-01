@@ -103,8 +103,9 @@ jobs:
           valueFile: 'deployments.yaml'
           propertyPath: 'spec.template.spec.containers[0].image'
           value: misoboy/demo:${{ needs.docker-dev.outputs.version }}
-          branch: feature/${{ needs.docker-dev.outputs.version }}
-          targetBranch: development
+          #branch: feature/${{ needs.docker-dev.outputs.version }}
+          #targetBranch: development
+          branch: development
           masterBranchName: development
           createPR: true
           title: "Update Image Version"
