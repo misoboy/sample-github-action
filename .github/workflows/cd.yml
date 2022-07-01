@@ -51,9 +51,6 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     if: ${{ needs.build.outputs.branch == 'development' }}
-    outputs:
-      imageId: ${{ steps.image.outputs.imageId }}
-      version: ${{ steps.image.outputs.version }}
     steps:
       - uses: actions/download-artifact@master
         with:
@@ -105,14 +102,14 @@ jobs:
         with:
           valueFile: 'deployments.yaml'
           propertyPath: 'spec.template.spec.containers[0].image'
-          value: ${{ needs.docker-dev.outputs.imageId }}
-          branch: feature/${{ needs.docker-dev.outputs.version }}
+          value: ${{ needs.docker-dev.steps.image.outputs.imageId }}
+          branch: feature/${{ needs.docker-dev.steps.image.outputs.version }}
           targetBranch: development
           masterBranchName: development
           createPR: true
           title: "Update Image Version"
           description: "Update Image Version"
-          message: 'Update Image Version to ${{ needs.docker-dev.outputs.imageId }}'
+          message: 'Update Image Version to ${{ needs.docker-dev.steps.image.outputs.imageId }}'
           repository: misoboy/sample-manifest
           token: ${{ secrets.GIT_TOKEN }}
 
