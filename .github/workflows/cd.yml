@@ -112,7 +112,7 @@ jobs:
           createPR: true
           title: "Update Image Version"
           description: "Update Image Version"
-          message: 'Update Image Version to ${{ needs.docker-dev.steps.image.outputs.imageId }}'
+          message: 'Update Image Version to ${{ needs.docker-dev.outputs.imageId }}'
           repository: misoboy/sample-manifest
           token: ${{ secrets.GIT_TOKEN }}
 
